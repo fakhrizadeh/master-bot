@@ -1,7 +1,10 @@
 import logging
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackContext
+import os
 from config import TELEGRAM_BOT_TOKEN, ADMIN_CHAT_ID
+from datetime import datetime
+import pytz
 
 # تنظیمات لاگ
 logging.basicConfig(
@@ -13,7 +16,7 @@ logger = logging.getLogger(__name__)
 # ==============================
 # ارسال پیغام به ادمین بعد از اتصال ربات
 # ==============================
-async def send_connection_message(update: Update, context):
+async def send_connection_message(context: ContextTypes.DEFAULT_TYPE):
     """
     ارسال پیغام موفقیت‌آمیز به ادمین ربات بعد از اتصال.
     """
@@ -25,7 +28,7 @@ async def send_connection_message(update: Update, context):
 # ==============================
 # دستور /start برای تست اتصال
 # ==============================
-async def start(update: Update, context):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     ارسال پیغام خوشامدگویی برای بررسی اتصال
     """
@@ -40,8 +43,9 @@ def create_application():
     # دستور /start
     application.add_handler(CommandHandler("start", start))
 
-    # بعد از راه‌اندازی ربات، اتصال را بررسی و پیغام موفقیت را ارسال می‌کند
-    application.add_job(send_connection_message, "startup")
+    # تنظیم زمان‌بندی برای ارسال پیغام اتصال به ادمین
+    job_queue = application.job_queue
+    job_queue.run_once(send_connection_message, when=0)
 
     return application
 
