@@ -1,20 +1,13 @@
 import os
 
-# Telegram Bot Configuration
+# دریافت توکن ربات تلگرام از متغیر محیطی
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+# چک کردن اگر توکن تلگرام وجود نداشت و ارور دادن
 if not TELEGRAM_BOT_TOKEN:
     raise RuntimeError("❌ TELEGRAM_BOT_TOKEN is not set in environment variables")
 
-# Admin / User IDs
-YOUR_USER_ID = int(os.getenv("YOUR_USER_ID", "63614689"))
-ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID", "63614689"))
+# شناسه ادمین تلگرام (برای ارسال پیام‌ها به ادمین)
+ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID", "your-admin-chat-id"))
 
-# Forum / Threads
-FORUM_CHAT_ID = -1002891150464
-TARGET_MESSAGE_THREAD_ID = 7
-LEAVE_REQUEST_THREAD_ID = 5
-
-# Time / Scheduler
-TEHRAN_TIMEZONE_STR = "Asia/Tehran"
-REPORT_REMINDER_TIME_MORNING = 9
-REPORT_REMINDER_TIME_EVENING = 18
+# در صورتی که از متغیر محیطی `ADMIN_CHAT_ID` استفاده می‌کنید، باید مقدار آن را در تنظیمات محیطی لیارا وارد کنید.
